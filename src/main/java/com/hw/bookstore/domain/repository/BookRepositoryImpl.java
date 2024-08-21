@@ -1,13 +1,14 @@
 package com.hw.bookstore.domain.repository;
 
 import com.hw.bookstore.domain.entity.Book;
+import com.hw.bookstore.exception.BookNotFoundException;
 import com.hw.bookstore.exception.DataProcessingException;
+import jakarta.persistence.NoResultException;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
-import org.hibernate.query.Query;
 import org.springframework.stereotype.Repository;
 
 @RequiredArgsConstructor
@@ -42,10 +43,25 @@ public class BookRepositoryImpl implements BookRepository {
     @Override
     public List<Book> findAll() {
         try (Session session = sessionFactory.openSession()) {
-            Query<Book> query = session.createQuery("from Book", Book.class);
-            return query.getResultList();
+            return session.createQuery("from Book", Book.class)
+                    .getResultList();
         } catch (Exception ex) {
             throw new DataProcessingException("Cannot get list of books from DB", ex);
+        }
+    }
+
+    @Override
+    public Book findById(Long id) {
+        try (Session session = sessionFactory.openSession()) {
+            return session.createQuery("from Book where id = :id", Book.class)
+                    .setParameter("id", id)
+                    .getSingleResult();
+        } catch (NoResultException ex) {
+            throw new BookNotFoundException("Book was not found with id: '%s'"
+                    .formatted(id), ex);
+        } catch (Exception ex) {
+            throw new DataProcessingException("Cannot get book with id: '%s' from DB"
+                    .formatted(id), ex);
         }
     }
 }
