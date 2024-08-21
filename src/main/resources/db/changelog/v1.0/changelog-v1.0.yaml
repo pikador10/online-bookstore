@@ -1,0 +1,4 @@
+databaseChangeLog:
+  - include:
+      file: changes/2024_08_21_add_book_table.yaml
+      relativeToChangelogFile: true
