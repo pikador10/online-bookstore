@@ -2,6 +2,7 @@ package com.hw.bookstore.controller;
 
 import com.hw.bookstore.dto.BookDto;
 import com.hw.bookstore.dto.BookRequestDto;
+import com.hw.bookstore.dto.BookSearchParamsRequestDto;
 import com.hw.bookstore.service.BookService;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -26,6 +27,11 @@ public class BookController {
     @GetMapping
     public List<BookDto> getAll() {
         return bookService.findAll();
+    }
+
+    @GetMapping("/search")
+    public List<BookDto> getAllBySearchParams(@RequestBody BookSearchParamsRequestDto requestDto) {
+        return bookService.getAllBySearchParams(requestDto);
     }
 
     @GetMapping("/{id}")
