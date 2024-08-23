@@ -13,6 +13,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.SQLRestriction;
 
 @ToString
 @Builder
@@ -20,6 +22,8 @@ import lombok.ToString;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@SQLDelete(sql = "UPDATE book SET is_deleted = true WHERE id = ?")
+@SQLRestriction("is_deleted = false")
 @Entity
 @Table(name = "book")
 public class Book {
@@ -43,5 +47,9 @@ public class Book {
 
     private String description;
 
+    @Column(name = "cover_image")
     private String coverImage;
+
+    @Column(name = "is_deleted", nullable = false)
+    private boolean isDeleted = false;
 }
