@@ -1,7 +1,7 @@
 package com.hw.bookstore.domain.repository;
 
 import com.hw.bookstore.domain.entity.Book;
-import com.hw.bookstore.exception.BookNotFoundException;
+import com.hw.bookstore.exception.EntityNotFoundException;
 import com.hw.bookstore.exception.DataProcessingException;
 import jakarta.persistence.NoResultException;
 import java.util.List;
@@ -57,7 +57,7 @@ public class BookRepositoryImpl implements BookRepository {
                     .setParameter("id", id)
                     .getSingleResult();
         } catch (NoResultException ex) {
-            throw new BookNotFoundException("Book was not found with id: '%s'"
+            throw new EntityNotFoundException("Book was not found with id: '%s'"
                     .formatted(id), ex);
         } catch (Exception ex) {
             throw new DataProcessingException("Cannot get book with id: '%s' from DB"
