@@ -4,7 +4,7 @@ import com.hw.bookstore.domain.entity.Book;
 import com.hw.bookstore.domain.repository.BookRepository;
 import com.hw.bookstore.dto.BookDto;
 import com.hw.bookstore.dto.BookRequestDto;
-import com.hw.bookstore.exception.BookNotFoundException;
+import com.hw.bookstore.exception.EntityNotFoundException;
 import com.hw.bookstore.mapper.BookMapper;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -53,13 +53,13 @@ public class BookServiceImpl implements BookService {
 
     private Book getBook(Long id) {
         return bookRepository.findById(id)
-                .orElseThrow(() -> new BookNotFoundException("Book was not found with id: '%s'"
+                .orElseThrow(() -> new EntityNotFoundException("Book was not found with id: '%s'"
                         .formatted(id)));
     }
 
     private void validateBookExistence(Long id) {
         if (!bookRepository.existsById(id)) {
-            throw new BookNotFoundException("Book was not found with id: '%s'"
+            throw new EntityNotFoundException("Book was not found with id: '%s'"
                     .formatted(id));
         }
     }
