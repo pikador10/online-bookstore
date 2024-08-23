@@ -2,6 +2,7 @@ package com.hw.bookstore.service;
 
 import com.hw.bookstore.dto.BookDto;
 import com.hw.bookstore.dto.BookRequestDto;
+import com.hw.bookstore.dto.BookSearchParamsRequestDto;
 import java.util.List;
 
 public interface BookService {
@@ -15,4 +16,6 @@ public interface BookService {
     BookDto updateById(Long id, BookRequestDto requestDto);
 
     void deleteById(Long id);
+
+    List<BookDto> getAllBySearchParams(BookSearchParamsRequestDto requestDto);
 }

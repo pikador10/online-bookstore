@@ -4,8 +4,10 @@ import com.hw.bookstore.domain.entity.Book;
 import com.hw.bookstore.domain.repository.BookRepository;
 import com.hw.bookstore.dto.BookDto;
 import com.hw.bookstore.dto.BookRequestDto;
+import com.hw.bookstore.dto.BookSearchParamsRequestDto;
 import com.hw.bookstore.exception.EntityNotFoundException;
 import com.hw.bookstore.mapper.BookMapper;
+import com.hw.bookstore.specification.BookSpecification;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -26,9 +28,13 @@ public class BookServiceImpl implements BookService {
 
     @Override
     public List<BookDto> findAll() {
-        return bookRepository.findAll().stream()
-                .map(bookMapper::toBookDto)
-                .toList();
+        return bookMapper.toBookDtos(bookRepository.findAll());
+    }
+
+    @Override
+    public List<BookDto> getAllBySearchParams(BookSearchParamsRequestDto requestDto) {
+        BookSpecification bookSpecification = BookSpecification.of(requestDto);
+        return bookMapper.toBookDtos(bookRepository.findAll(bookSpecification));
     }
 
     @Override
