@@ -5,10 +5,9 @@ import com.hw.bookstore.domain.repository.BookRepository;
 import com.hw.bookstore.dto.request.BookRequestDto;
 import com.hw.bookstore.dto.request.BookSearchParamsRequestDto;
 import com.hw.bookstore.dto.response.BookResponseDto;
-import com.hw.bookstore.exception.BookNotFoundException;
+import com.hw.bookstore.exception.EntityNotFoundException;
 import com.hw.bookstore.mapper.BookMapper;
 import com.hw.bookstore.specification.BookSpecification;
-import com.hw.bookstore.validation.BookValidation;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -21,7 +20,6 @@ public class BookServiceImpl implements BookService {
 
     private final BookRepository bookRepository;
     private final BookMapper bookMapper;
-    private final BookValidation bookValidation;
 
     @Override
     public BookResponseDto save(BookRequestDto requestDto) {
@@ -51,7 +49,7 @@ public class BookServiceImpl implements BookService {
 
     @Override
     public BookResponseDto updateById(Long id, BookRequestDto requestDto) {
-        bookValidation.validateBookExistence(id);
+        validateBookExistence(id);
         Book book = bookMapper.toBook(id, requestDto);
         bookRepository.save(book);
         return bookMapper.toBookDto(book);
@@ -59,13 +57,20 @@ public class BookServiceImpl implements BookService {
 
     @Override
     public void deleteById(Long id) {
-        bookValidation.validateBookExistence(id);
+        validateBookExistence(id);
         bookRepository.deleteById(id);
     }
 
     private Book getBook(Long id) {
         return bookRepository.findById(id)
-                .orElseThrow(() -> new BookNotFoundException("Book was not found with id: '%s'"
+                .orElseThrow(() -> new EntityNotFoundException("Book was not found with id: '%s'"
                         .formatted(id)));
+    }
+
+    private void validateBookExistence(Long id) {
+        if (!bookRepository.existsById(id)) {
+            throw new EntityNotFoundException("Book was not found with id: '%s'"
+                    .formatted(id));
+        }
     }
 }

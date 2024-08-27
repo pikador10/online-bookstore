@@ -2,9 +2,9 @@ package com.hw.bookstore.exception;
 
 import org.springframework.http.HttpStatus;
 
-public class BookNotFoundException extends AbstractRestException {
+public class EntityNotFoundException extends AbstractRestException {
 
-    public BookNotFoundException(String message) {
+    public EntityNotFoundException(String message) {
         super(message);
     }
 
