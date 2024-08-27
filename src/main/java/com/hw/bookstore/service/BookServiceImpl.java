@@ -10,6 +10,8 @@ import com.hw.bookstore.mapper.BookMapper;
 import com.hw.bookstore.specification.BookSpecification;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -32,9 +34,11 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public List<BookDto> getAllBySearchParams(BookSearchParamsRequestDto requestDto) {
-        BookSpecification bookSpecification = BookSpecification.of(requestDto);
-        return bookMapper.toBookDtos(bookRepository.findAll(bookSpecification));
+    public Page<BookDto> getAllBySearchParams(BookSearchParamsRequestDto requestDto,
+                                              Pageable pageable
+    ) {
+        return bookRepository.findAll(BookSpecification.of(requestDto), pageable)
+                .map(bookMapper::toBookDto);
     }
 
     @Override

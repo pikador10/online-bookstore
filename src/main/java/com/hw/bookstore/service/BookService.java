@@ -4,6 +4,8 @@ import com.hw.bookstore.dto.BookDto;
 import com.hw.bookstore.dto.BookRequestDto;
 import com.hw.bookstore.dto.BookSearchParamsRequestDto;
 import java.util.List;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 public interface BookService {
 
@@ -17,5 +19,5 @@ public interface BookService {
 
     void deleteById(Long id);
 
-    List<BookDto> getAllBySearchParams(BookSearchParamsRequestDto requestDto);
+    Page<BookDto> getAllBySearchParams(BookSearchParamsRequestDto requestDto, Pageable pageable);
 }
