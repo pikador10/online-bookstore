@@ -2,9 +2,9 @@ package com.hw.bookstore.service;
 
 import com.hw.bookstore.domain.entity.Book;
 import com.hw.bookstore.domain.repository.BookRepository;
-import com.hw.bookstore.dto.BookDto;
-import com.hw.bookstore.dto.BookRequestDto;
-import com.hw.bookstore.dto.BookSearchParamsRequestDto;
+import com.hw.bookstore.dto.request.BookRequestDto;
+import com.hw.bookstore.dto.request.BookSearchParamsRequestDto;
+import com.hw.bookstore.dto.response.BookResponseDto;
 import com.hw.bookstore.exception.BookNotFoundException;
 import com.hw.bookstore.mapper.BookMapper;
 import com.hw.bookstore.specification.BookSpecification;
@@ -24,33 +24,33 @@ public class BookServiceImpl implements BookService {
     private final BookValidation bookValidation;
 
     @Override
-    public BookDto save(BookRequestDto requestDto) {
+    public BookResponseDto save(BookRequestDto requestDto) {
         Book book = bookMapper.toBook(null, requestDto);
         bookRepository.save(book);
         return bookMapper.toBookDto(book);
     }
 
     @Override
-    public List<BookDto> findAll() {
+    public List<BookResponseDto> findAll() {
         return bookMapper.toBookDtos(bookRepository.findAll());
     }
 
     @Override
-    public Page<BookDto> getAllBySearchParams(BookSearchParamsRequestDto requestDto,
-                                              Pageable pageable
+    public Page<BookResponseDto> getAllBySearchParams(BookSearchParamsRequestDto requestDto,
+                                                      Pageable pageable
     ) {
         return bookRepository.findAll(BookSpecification.of(requestDto), pageable)
                 .map(bookMapper::toBookDto);
     }
 
     @Override
-    public BookDto findById(Long id) {
+    public BookResponseDto findById(Long id) {
         Book book = getBook(id);
         return bookMapper.toBookDto(book);
     }
 
     @Override
-    public BookDto updateById(Long id, BookRequestDto requestDto) {
+    public BookResponseDto updateById(Long id, BookRequestDto requestDto) {
         bookValidation.validateBookExistence(id);
         Book book = bookMapper.toBook(id, requestDto);
         bookRepository.save(book);

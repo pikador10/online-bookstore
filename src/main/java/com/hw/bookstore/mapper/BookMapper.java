@@ -1,19 +1,21 @@
 package com.hw.bookstore.mapper;
 
 import com.hw.bookstore.domain.entity.Book;
-import com.hw.bookstore.dto.BookDto;
-import com.hw.bookstore.dto.BookRequestDto;
+import com.hw.bookstore.dto.request.BookRequestDto;
+import com.hw.bookstore.dto.response.BookResponseDto;
 import java.util.List;
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 
 @Mapper(componentModel = "spring")
 public interface BookMapper {
 
+    @Mapping(target = "deleted", ignore = true)
     Book toBook(Long id, BookRequestDto requestDto);
 
-    BookDto toBookDto(Book book);
+    BookResponseDto toBookDto(Book book);
 
-    default List<BookDto> toBookDtos(List<Book> books) {
+    default List<BookResponseDto> toBookDtos(List<Book> books) {
         return books.stream()
                 .map(this::toBookDto)
                 .toList();

@@ -2,7 +2,7 @@ package com.hw.bookstore.specification;
 
 import com.hw.bookstore.domain.entity.Book;
 import com.hw.bookstore.domain.entity.Book_;
-import com.hw.bookstore.dto.BookSearchParamsRequestDto;
+import com.hw.bookstore.dto.request.BookSearchParamsRequestDto;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;
 import jakarta.persistence.criteria.Predicate;
