@@ -4,6 +4,7 @@ public record UserRegistrationResponseDto(
         Long id,
         String firstName,
         String lastName,
+        String email,
         String shippingAddress
 ) {
 }
