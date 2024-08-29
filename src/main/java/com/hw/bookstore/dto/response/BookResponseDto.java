@@ -1,8 +1,8 @@
-package com.hw.bookstore.dto;
+package com.hw.bookstore.dto.response;
 
 import java.math.BigDecimal;
 
-public record BookDto(
+public record BookResponseDto(
         Long id,
         String title,
         String author,

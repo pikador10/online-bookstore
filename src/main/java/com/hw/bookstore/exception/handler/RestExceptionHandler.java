@@ -3,6 +3,7 @@ package com.hw.bookstore.exception.handler;
 import static org.apache.commons.lang3.StringUtils.SPACE;
 
 import com.hw.bookstore.exception.EntityNotFoundException;
+import com.hw.bookstore.exception.RegistrationException;
 import java.util.List;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
@@ -33,6 +34,19 @@ public class RestExceptionHandler {
 
     @ExceptionHandler(EntityNotFoundException.class)
     public ResponseEntity<ErrorBody> handleBookNotFoundException(EntityNotFoundException ex) {
+        var errorMessages = List.of(new ErrorMessage(
+                ex.getClass().getSimpleName(),
+                ex.responseMessage(),
+                ex.responseHttpStatus())
+        );
+
+        return new ResponseEntity<>(
+                new ErrorBody(errorMessages, ex.getStackTrace()),
+                HttpStatusCode.valueOf(ex.responseHttpStatus()));
+    }
+
+    @ExceptionHandler(RegistrationException.class)
+    public ResponseEntity<ErrorBody> handleRegistrationException(RegistrationException ex) {
         var errorMessages = List.of(new ErrorMessage(
                 ex.getClass().getSimpleName(),
                 ex.responseMessage(),

@@ -1,0 +1,13 @@
+databaseChangeLog:
+  - changeSet:
+      id: 2024_08_26_add_user_table
+      author: andrii
+      dbms: mysql,h2
+      changes:
+        - sqlFile:
+            dbms: mysql
+            encoding: utf8
+            path: ../data/2024-08-26_add_user_table.sql
+            relativeToChangelogFile: true
+            splitStatements: true
+            stripComments: true

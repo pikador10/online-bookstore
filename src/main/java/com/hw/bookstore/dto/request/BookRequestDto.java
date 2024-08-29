@@ -1,8 +1,9 @@
-package com.hw.bookstore.dto;
+package com.hw.bookstore.dto.request;
 
 import jakarta.validation.constraints.DecimalMax;
 import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import java.math.BigDecimal;
 
@@ -17,7 +18,7 @@ public record BookRequestDto(
         String author,
 
         @NotNull(message = "Isbn can not be null")
-        @Size(min = 1, max = 255, message = "Isbn size must be between 1 and 255 symbols")
+        @Pattern(regexp = ISBN_VALIDATION_PATTERN, message = ISBN_VALIDATION_ERROR_MESSAGE)
         String isbn,
 
         @NotNull(message = "Price can not be null")
@@ -29,4 +30,9 @@ public record BookRequestDto(
 
         String coverImage
 ) {
+    private static final String ISBN_VALIDATION_PATTERN = "^(?:ISBN(?:-10)?:? )?(?=[0-9X]{10}$|"
+            + "(?=(?:[0-9]+[- ]){3})[- 0-9X]{13}$)[0-9]{1,5}[- ]?[0-9]+[- ]?[0-9]+[- ]?[0-9X]$";
+
+    private static final String ISBN_VALIDATION_ERROR_MESSAGE = "Invalid ISBN-10 format. "
+            + "Ensure it follows standard structure (e.g., 0-596-52068-9).";
 }
