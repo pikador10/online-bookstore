@@ -5,3 +5,6 @@ databaseChangeLog:
   - include:
       file: changes/2024_08_26_add_user_table.yaml
       relativeToChangelogFile: true
+  - include:
+      file: changes/2024_08_28_add_role_table.yaml
+      relativeToChangelogFile: true

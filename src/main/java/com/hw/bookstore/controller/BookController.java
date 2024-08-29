@@ -12,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -31,12 +32,14 @@ public class BookController {
     private final BookService bookService;
 
     @Operation(summary = "Get all books")
+    @PreAuthorize("hasAuthority('USER')")
     @GetMapping
     public List<BookResponseDto> getAll() {
         return bookService.findAll();
     }
 
     @Operation(summary = "Get all books by search params with pagination and sorting")
+    @PreAuthorize("hasAuthority('USER')")
     @GetMapping("/search")
     public Page<BookResponseDto> getAllBySearchParams(
             @RequestBody BookSearchParamsRequestDto requestDto,
@@ -46,12 +49,14 @@ public class BookController {
     }
 
     @Operation(summary = "Get book by id")
+    @PreAuthorize("hasAuthority('USER')")
     @GetMapping("/{id}")
     public BookResponseDto getBookById(@PathVariable Long id) {
         return bookService.findById(id);
     }
 
     @Operation(summary = "Create new book")
+    @PreAuthorize("hasAuthority('ADMIN')")
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping
     public BookResponseDto createBook(@RequestBody @Valid BookRequestDto requestDto) {
@@ -59,6 +64,7 @@ public class BookController {
     }
 
     @Operation(summary = "Update book by id")
+    @PreAuthorize("hasAuthority('ADMIN')")
     @PutMapping("/{id}")
     public BookResponseDto updateBookById(@PathVariable Long id,
                                   @RequestBody @Valid BookRequestDto requestDto
@@ -67,6 +73,7 @@ public class BookController {
     }
 
     @Operation(summary = "Delete book by id")
+    @PreAuthorize("hasAuthority('ADMIN')")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @DeleteMapping("/{id}")
     public void deleteBook(@PathVariable Long id) {

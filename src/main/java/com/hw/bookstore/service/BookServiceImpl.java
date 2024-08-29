@@ -13,6 +13,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
@@ -47,6 +48,7 @@ public class BookServiceImpl implements BookService {
         return bookMapper.toBookDto(book);
     }
 
+    @Transactional
     @Override
     public BookResponseDto updateById(Long id, BookRequestDto requestDto) {
         validateBookExistence(id);
@@ -55,6 +57,7 @@ public class BookServiceImpl implements BookService {
         return bookMapper.toBookDto(book);
     }
 
+    @Transactional
     @Override
     public void deleteById(Long id) {
         validateBookExistence(id);
