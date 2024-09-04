@@ -1,0 +1,16 @@
+spring:
+  datasource:
+    url: jdbc:mysql://localhost:3306/bookstore?createDatabaseIfNotExist=true
+    username: root
+    password: pass
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    show-sql: true
+    open-in-view: false
+
+auth:
+  token:
+    secret: mysupersecretkeybeingusingintoken
+    expiration: 30m
