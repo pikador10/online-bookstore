@@ -42,23 +42,24 @@ public class TokenProvider {
                 .compact();
     }
 
-    public boolean validateToken(String token) {
+    public void validateToken(String token) {
         try {
             Jwts.parser().verifyWith(getSecret())
                     .build()
                     .parseSignedClaims(token);
-            return true;
         } catch (MalformedJwtException ex) {
             log.error("Invalid JWT token");
+            throw new MalformedJwtException("Invalid JWT token");
         } catch (ExpiredJwtException ex) {
             log.error("Expired JWT token");
+            throw new ExpiredJwtException(null, null, "Expired JWT token");
         } catch (UnsupportedJwtException ex) {
             log.error("Unsupported JWT token");
+            throw new UnsupportedJwtException("Unsupported JWT token");
         } catch (IllegalArgumentException ex) {
-            log.error("JWT claims string is empty.");
+            log.error("JWT claims string is empty");
+            throw new IllegalArgumentException("JWT claims string is empty");
         }
-
-        return false;
     }
 
     private SecretKey getSecret() {

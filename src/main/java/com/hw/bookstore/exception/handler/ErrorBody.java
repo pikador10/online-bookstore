@@ -13,6 +13,6 @@ import lombok.Setter;
 @NoArgsConstructor
 public class ErrorBody {
 
-    private List<ErrorMessage> errors = new ArrayList<>();
+    private List<? extends ErrorMessage> errors = new ArrayList<>();
     private StackTraceElement[] stackTraceElements = new StackTraceElement[]{};
 }
