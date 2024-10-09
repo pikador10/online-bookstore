@@ -1,7 +1,10 @@
 package com.hw.bookstore.controller;
 
+import com.hw.bookstore.dto.request.UserLoginRequestDto;
 import com.hw.bookstore.dto.request.UserRegistrationRequestDto;
+import com.hw.bookstore.dto.response.UserLoginResponseDto;
 import com.hw.bookstore.dto.response.UserRegistrationResponseDto;
+import com.hw.bookstore.security.auth.jwt.AuthenticationService;
 import com.hw.bookstore.service.UserServiceImpl;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -21,6 +24,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class UserAuthController {
 
     private final UserServiceImpl userServiceImpl;
+    private final AuthenticationService authenticationService;
 
     @Operation(summary = "Register user")
     @ResponseStatus(HttpStatus.CREATED)
@@ -29,5 +33,14 @@ public class UserAuthController {
             @RequestBody @Valid UserRegistrationRequestDto requestDto
     ) {
         return userServiceImpl.register(requestDto);
+    }
+
+    @Operation(summary = "Login user")
+    @ResponseStatus(HttpStatus.ACCEPTED)
+    @PostMapping("/login")
+    public UserLoginResponseDto loginUser(
+            @RequestBody @Valid UserLoginRequestDto requestDto
+    ) {
+        return authenticationService.authenticate(requestDto);
     }
 }

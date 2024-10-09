@@ -6,6 +6,10 @@ public abstract class AbstractRestException extends RuntimeException {
         super(message);
     }
 
+    protected AbstractRestException(String message, Throwable cause) {
+        super(message, cause);
+    }
+
     public abstract int responseHttpStatus();
 
     public abstract String responseMessage();

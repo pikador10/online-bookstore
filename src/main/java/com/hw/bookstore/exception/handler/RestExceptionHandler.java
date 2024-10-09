@@ -4,6 +4,7 @@ import static org.apache.commons.lang3.StringUtils.SPACE;
 
 import com.hw.bookstore.exception.EntityNotFoundException;
 import com.hw.bookstore.exception.RegistrationException;
+import com.hw.bookstore.exception.TokenAuthenticationException;
 import java.util.List;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
@@ -51,6 +52,23 @@ public class RestExceptionHandler {
                 ex.getClass().getSimpleName(),
                 ex.responseMessage(),
                 ex.responseHttpStatus())
+        );
+
+        return new ResponseEntity<>(
+                new ErrorBody(errorMessages, ex.getStackTrace()),
+                HttpStatusCode.valueOf(ex.responseHttpStatus()));
+    }
+
+    @ExceptionHandler(TokenAuthenticationException.class)
+    public ResponseEntity<ErrorBody> handleTokenAuthenticationException(
+            TokenAuthenticationException ex
+    ) {
+        var errorMessages = List.of(new CauseErrorMessage(
+                ex.getClass().getSimpleName(),
+                ex.responseMessage(),
+                ex.responseHttpStatus(),
+                ex.getCause().getClass().getSimpleName(),
+                ex.getCause().getMessage())
         );
 
         return new ResponseEntity<>(

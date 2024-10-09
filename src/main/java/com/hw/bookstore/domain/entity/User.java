@@ -11,6 +11,7 @@ import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Table;
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -75,5 +76,11 @@ public class User implements UserDetails {
     @Override
     public boolean isEnabled() {
         return !isDeleted;
+    }
+
+    public List<String> getAuthoritiesNames() {
+        return roles.stream()
+                .map(Role::getAuthority)
+                .toList();
     }
 }
